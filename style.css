@@ -1,0 +1,45 @@
+:root {
+    --green: #48c78e;
+    --red: #ff3860;
+
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #F3F3F3;
+}
+
+main {
+    max-width: 81.25rem;
+    margin: 0;
+    padding: 1.8rem;
+    padding-left: 1.25rem;
+
+}
+
+form {
+    margin: 2rem 1rem;
+}
+
+.field {
+    max-width: 60%;
+}
+
+#bday {
+    max-width: 14.31rem;
+}
+
+button {
+    margin-top: 1rem;
+}
+
+.is-success {
+    color: var(--green);
+}
+
+.is-danger {
+    color: var(--red);
+}
