@@ -4,61 +4,58 @@ require_once(dirname(__FILE__) . "/help/validate.php");
 
 
 
-//1. Formular ausgeben 
-//2. Daten einlesen 
-if ($_SERVER["REQUEST_METHOD"] === "POST") { //3. checken ob Formular versendet wurde
+//1. Display Form
+//2. Read Data 
+if ($_SERVER["REQUEST_METHOD"] === "POST") { //3. check if form has been sent
 
   $errors = validate($fields, $_POST, $_FILES);
 
 
-  //4. Daten validieren 
-  //PLZ/Ort/Bundesland-Prüfung aufrufen
+  //4. Validate Data
+  //check CAP/City/State
   $plz = $_POST["plz"];
   $ort = $_POST["ort"];
   $bundesland = $_POST["bundesland"];
 
 
   if (!isset($errors['bundesland'])) {
-    //PLZ/Ort/Bundesland Validierung hinzufügen
+    //add Validation for CAP/City/State
     $plzError = validate_plz_ort_bundesland($plz, $ort, $bundesland);
 
     if ($plzError !== true) {
-      //Wenn die funktion eine Fehlermeldung zurückgibt, in das Fehlerarray einfügen
-      /*::PETER:: Damit der Fehler ausgegeben wird, solltest du den Key bundesland und nicht plz_ort_bundesland verwenden. Oder du gibst im Formular untern 
-        <?php if (!empty($errors['plz_ort_bundesland'])): ?>
-          <div class="is-danger"><?= $errors['bundesland'] ?></div>
-        <?php endif; ?>
-      aus.
-      //$errors["plz_ort_bundesland"] = $plzError;
-      */
+      // If the function returns an error message, add it to the error array.
+/*
+   To display the error correctly,  the key 'bundesland' is used
+   instead of 'plz_ort_bundesland'.  
+*/
       $errors["bundesland"] = $plzError;
     }
   }
 
-  //5. Bei Fehler: Fehlermeldung ausgeben (Fehlermeldungen müssen unten im Formular ausgegeben werden)
-//6. Bei Erfolg: Daten verarbeiten, CSV Datei speichern, evt. in Datenbank speichern, e-mail versenden etc.
+  //5. If error: show error message (error messagaes always need to be  shown under the form)
+//6. If success: Data processing, save CSV File, save to Database, send e-mail etc.
 
   if (empty($errors)) {
     $successMessage = save_application_and_resume($_POST, $_FILES);
   }
 }
 
-// Funktion zur Speicherung der Bewerbung und des Lebenslaufs
+// Function for saving application and CV
 function save_application_and_resume(array $formData, array $fileData)
 {
   $csvFilePath = 'Bewerbungsformular/bewerbung.csv';
-  //::Peter:: Hier solltest du noch überprüfen ob der Ordner Bewerbungsformular existiert => falls nicht dann musst du den Ordner erzeugen
+  // verify if folder Application form exists => if not, generate folder
   if (!is_dir('Bewerbungsformular')) {
     mkdir('Bewerbungsformular', 0755, true);
   }
-  // CSV-Datei öffnen oder erstellen
+  // open or generate CSV File 
   $csvFile = fopen($csvFilePath, 'a');
 
   if (!$csvFile) {
     return 'Fehler beim Öffnen der CSV-Datei.';
   }
 
-  // Daten für CSV speichern
+  // Save Data for CSV
   $dataToWrite = [
     $formData['vn'],
     $formData['nn'],
@@ -70,10 +67,10 @@ function save_application_and_resume(array $formData, array $fileData)
     ''
   ];
 
-  // Ordner für Lebenslauf
+  // Folder for CV 
   $uploadDir = 'Bewerbungsformular/lebenslauf/';
   if (!is_dir($uploadDir)) {
-    //::PETER:: Hier solltest du die Berechtigungen 0755 verwenden, ansonsten ist der Ordner für Angreifer offen.
+    //use permissions 0755, else folder is open for attackers 
     mkdir($uploadDir, 0777, true);
   }
 
@@ -90,13 +87,13 @@ function save_application_and_resume(array $formData, array $fileData)
     }
 
     if (move_uploaded_file($fileData['resume']['tmp_name'], $resumePath)) {
-      $dataToWrite[7] = $resumePath; // Lebenslauf-Pfad in CSV speichern
+      $dataToWrite[7] = $resumePath; // save CV path in CSV 
     } else {
       return 'Fehler beim Speichern des Lebenslaufs.';
     }
   }
 
-  // CSV schreiben
+  // write CSV 
   fputcsv($csvFile, $dataToWrite);
   fclose($csvFile);
 
@@ -133,7 +130,7 @@ function save_application_and_resume(array $formData, array $fileData)
             echo 'is-danger';
           } ?>" placeholder="Vorname..." required value="<?= $_POST['vn'] ?? ''; ?>">
           <?php
-          // Fehlermeldung für Vorname ausgeben
+          // show error message for first name 
           if (isset($errors["vn"])) {
             echo "<div class='is-danger'>" . $errors["vn"] . "</div>";
           }
@@ -148,7 +145,7 @@ function save_application_and_resume(array $formData, array $fileData)
             echo 'is-danger';
           } ?>" placeholder="Nachname..." required value="<?= $_POST['nn'] ?? ''; ?>">
           <?php
-          //Fehlermeldung für Nachname ausgeben
+          //show error message for last name 
           if (isset($errors["nn"])) {
             echo "<div class='is-danger'>" . $errors["nn"] . "</div>";
           }
@@ -163,7 +160,7 @@ function save_application_and_resume(array $formData, array $fileData)
             echo 'is-danger';
           } ?>" placeholder="alexsmith@gmail.com" required value="<?= $_POST['email'] ?? ''; ?>">
           <?php
-          //Fehlermeldung für E-Mail ausgeben
+          //show error message for e-mail
           if (isset($errors["email"])) {
             echo "<div class='is-danger'>" . $errors["email"] . "</div>";
           }
@@ -178,7 +175,7 @@ function save_application_and_resume(array $formData, array $fileData)
             echo 'is-danger';
           } ?>" placeholder="1010" required value="<?= $_POST['plz'] ?? ''; ?>">
           <?php
-          //Fehlermeldung für PLZ ausgeben
+          //show error message for CAP 
           if (isset($errors["plz"])) {
             echo "<div class='is-danger'>" . $errors["plz"] . "</div>";
           }
@@ -193,7 +190,7 @@ function save_application_and_resume(array $formData, array $fileData)
             echo 'is-danger';
           } ?>" placeholder="Ort" required value="<?= $_POST['ort'] ?? ''; ?>">
           <?php
-          //Fehlermeldung für Ort ausgeben
+          //show error message for city
           if (isset($errors["ort"])) {
             echo "<div class='is-danger'>" . $errors["ort"] . "</div>";
           }
@@ -237,7 +234,7 @@ function save_application_and_resume(array $formData, array $fileData)
             echo 'is-danger';
           } ?>" placeholder="tt.mm.yyyy" required value="<?= $_POST['dob'] ?? ''; ?>">
           <?php
-          //Fehlermeldung für Nachname ausgeben
+          //show error message for birthdate
           if (isset($errors["dob"])) {
             echo "<div class='is-danger'>" . $errors["dob"] . "</div>";
           }
@@ -251,7 +248,7 @@ function save_application_and_resume(array $formData, array $fileData)
             echo 'is-danger';
           } ?>" placeholder="Datei.pdf" required value="<?= $_POST['resume'] ?? ''; ?>">
           <?php
-          //Fehlermeldung für Nachname ausgeben
+          //show error message for resumé
           if (isset($errors["resume"])) {
             echo "<div class='is-danger'>" . $errors["resume"] . "</div>";
           }
@@ -278,7 +275,7 @@ function save_application_and_resume(array $formData, array $fileData)
       </label>
       <br>
       <?php
-      //Fehlermeldung für AGB ausgeben
+      //show error message for general terms and conditions
       if (isset($errors["agb"])) {
         echo "<div class='is-danger'>" . $errors["agb"] . "</div>";
       }
