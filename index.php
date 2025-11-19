@@ -12,14 +12,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") { //3. check if form has been sent
 
 
   //4. Validate Data
-  //check CAP/City/State
+  //check CAP/County/City
   $plz = $_POST["plz"];
   $ort = $_POST["ort"];
   $bundesland = $_POST["bundesland"];
 
 
   if (!isset($errors['bundesland'])) {
-    //add Validation for CAP/City/State
+    //add Validation for CAP/County/City
     $plzError = validate_plz_ort_bundesland($plz, $ort, $bundesland);
 
     if ($plzError !== true) {
@@ -124,11 +124,11 @@ function save_application_and_resume(array $formData, array $fileData)
     <form action="#" method="post" enctype="multipart/form-data" novalidate>
 
       <div class="field">
-        <label class="label">Vorname</label>
+        <label class="label">First Name</label>
         <div class="control">
           <input type="text" name="vn" id="vorname" class="input <?php if (isset($errors['vn'])) {
             echo 'is-danger';
-          } ?>" placeholder="Vorname..." required value="<?= $_POST['vn'] ?? ''; ?>">
+          } ?>" placeholder="First Name..." required value="<?= $_POST['vn'] ?? ''; ?>">
           <?php
           // show error message for first name 
           if (isset($errors["vn"])) {
@@ -139,11 +139,11 @@ function save_application_and_resume(array $formData, array $fileData)
         </div>
       </div>
       <div class="field">
-        <label class="label">Nachname</label>
+        <label class="label">Last Name</label>
         <div class="control">
           <input type="text" name="nn" id="nachname" class="input <?php if (isset($errors['nn'])) {
             echo 'is-danger';
-          } ?>" placeholder="Nachname..." required value="<?= $_POST['nn'] ?? ''; ?>">
+          } ?>" placeholder="Last Name..." required value="<?= $_POST['nn'] ?? ''; ?>">
           <?php
           //show error message for last name 
           if (isset($errors["nn"])) {
@@ -154,7 +154,7 @@ function save_application_and_resume(array $formData, array $fileData)
       </div>
 
       <div class="field">
-        <label class="label">Email</label>
+        <label class="label">E-Mail</label>
         <div class="control">
           <input type="email" name="email" id="email" class="input <?php if (isset($errors['email'])) {
             echo 'is-danger';
@@ -169,7 +169,7 @@ function save_application_and_resume(array $formData, array $fileData)
       </div>
 
       <div class="field">
-        <label class="label">PLZ</label>
+        <label class="label">CAP</label>
         <div class="control">
           <input type="text" name="plz" id="plz" class="input <?php if (isset($errors['plz'])) {
             echo 'is-danger';
@@ -184,11 +184,11 @@ function save_application_and_resume(array $formData, array $fileData)
       </div>
 
       <div class="field">
-        <label class="label">Ort</label>
+        <label class="label">County</label>
         <div class="control">
           <input type="text" name="ort" id="ort" class="input <?php if (isset($errors['ort'])) {
             echo 'is-danger';
-          } ?>" placeholder="Ort" required value="<?= $_POST['ort'] ?? ''; ?>">
+          } ?>" placeholder="e.g. Vienna" required value="<?= $_POST['ort'] ?? ''; ?>">
           <?php
           //show error message for city
           if (isset($errors["ort"])) {
@@ -200,25 +200,26 @@ function save_application_and_resume(array $formData, array $fileData)
 
 
       <div class="field">
-        <label class="label">Bundesland</label>
+        <label class="label">City</label>
         <p> <span class="select">
 
             <select name="bundesland">
-              <option selected value="">---Bundesland wählen---</option>
-              <option value="Wien" <?= ($_POST['bundesland'] ?? '') === 'Wien' ? 'selected' : '' ?>>Wien</option>
-              <option value="Niederösterreich" <?= ($_POST['bundesland'] ?? '') === 'Niederösterreich' ? 'selected' : '' ?>>Niederösterreich</option>
+              <option selected value="">---Select City---</option>
+              <option value="Wien" <?= ($_POST['bundesland'] ?? '') === 'Wien' ? 'selected' : '' ?>>Vienna</option>
+              <option value="Niederösterreich" <?= ($_POST['bundesland'] ?? '') === 'Niederösterreich' ? 'selected' : '' ?>>Lower Austria</option>
               <option value="Burgenland" <?= ($_POST['bundesland'] ?? '') === 'Burgenland' ? 'selected' : '' ?>>Burgenland
               </option>
               <option value="Oberösterreich" <?= ($_POST['bundesland'] ?? '') === 'Oberösterreich' ? 'selected' : '' ?>>
-                Oberösterreich</option>
+                Upper Austria</option>
               <option value="Salzburg" <?= ($_POST['bundesland'] ?? '') === 'Salzburg' ? 'selected' : '' ?>>Salzburg
               </option>
-              <option value="Steiermark" <?= ($_POST['bundesland'] ?? '') === 'Steiermark' ? 'selected' : '' ?>>Steiermark
+              <option value="Steiermark" <?= ($_POST['bundesland'] ?? '') === 'Steiermark' ? 'selected' : '' ?>>Styria
               </option>
-              <option value="Tirol" <?= ($_POST['bundesland'] ?? '') === 'Tirol' ? 'selected' : '' ?>>Tirol</option>
+              <option value="Tirol" <?= ($_POST['bundesland'] ?? '') === 'Tirol' ? 'selected' : '' ?>>Tyrol</option>
               <option value="Vorarlberg" <?= ($_POST['bundesland'] ?? '') === 'Vorarlberg' ? 'selected' : '' ?>>Vorarlberg
               </option>
-              <option value="Kärnten" <?= ($_POST['bundesland'] ?? '') === 'Kärnten' ? 'selected' : '' ?>>Kärnten</option>
+              <option value="Kärnten" <?= ($_POST['bundesland'] ?? '') === 'Kärnten' ? 'selected' : '' ?>>Carinthia
+              </option>
             </select>
             <?php if (!empty($errors['bundesland'])): ?>
               <div class="is-danger"><?= $errors['bundesland'] ?></div>
@@ -228,7 +229,7 @@ function save_application_and_resume(array $formData, array $fileData)
       </div>
 
       <div class="field">
-        <label class="label">Geburtsdatum</label>
+        <label class="label">DOB</label>
         <div class="control">
           <input type="date" name="dob" id="dob" class="input <?php if (isset($errors['dob'])) {
             echo 'is-danger';
@@ -258,9 +259,9 @@ function save_application_and_resume(array $formData, array $fileData)
             <span class="file-icon">
               <i class="fas fa-upload"></i>
             </span>
-            <span class="file-label"> Datei wählen… </span>
+            <span class="file-label"> Choose file... </span>
           </span>
-          <span class="file-name"> Datei.pdf</span>
+          <span class="file-name"> file.pdf</span>
         </label>
       </div>
 
@@ -271,7 +272,7 @@ function save_application_and_resume(array $formData, array $fileData)
         } ?>" type="checkbox" value="AGB gelesen" id="agb" name="agb" required <?php
          echo isset($_POST["agb"]) && !isset($errors["agb"]) ? 'checked' : '';
          ?>>
-        Ich akzeptiere die AGB
+        I agree to the general terms and conditions
       </label>
       <br>
       <?php
@@ -282,7 +283,7 @@ function save_application_and_resume(array $formData, array $fileData)
       ?>
       </label>
       <br>
-      <button class="button">Senden</button>
+      <button class="button">Submit</button>
 
     </form>
   </main>
