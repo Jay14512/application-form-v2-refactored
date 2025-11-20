@@ -287,8 +287,8 @@ function save_application_and_resume(array $formData, array $fileData)
 
     </form>
   </main>
-  <footer>
-    &copy; 2025 Joshua Jason. All rights reserved
+  <footer class="site-footer">
+    <p>&copy; 2025 Joshua Jason. All rights reserved</p>
   </footer>
 </body>
 
