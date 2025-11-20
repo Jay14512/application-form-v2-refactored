@@ -74,7 +74,7 @@ function validate(array $rules, array &$data, array $files, bool $sanatize = tru
                     dd("Function doesn't exist", $fkt);
                 }
 
-                // Falls eine Datei geprüft wird, übergebe $files
+                //If a file is being checked, pass $files
                 if ($key === "resume") {
 
                     if (!is_pdf($key, $data, $files)) {

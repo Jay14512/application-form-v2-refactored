@@ -108,7 +108,7 @@ function save_application_and_resume(array $formData, array $fileData)
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bewerbung</title>
+  <title>Application</title>
   <link rel="stylesheet" href="/bulma/css/bulma.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -120,7 +120,7 @@ function save_application_and_resume(array $formData, array $fileData)
   }
   ?>
   <main>
-    <h1>Bewerbungsformular</h1>
+    <h1>Application Form</h1>
     <form action="#" method="post" enctype="multipart/form-data" novalidate>
 
       <div class="field">
@@ -287,7 +287,9 @@ function save_application_and_resume(array $formData, array $fileData)
 
     </form>
   </main>
-
+  <footer>
+    &copy; 2025 Joshua Jason. All rights reserved
+  </footer>
 </body>
 
 </html>
