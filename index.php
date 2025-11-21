@@ -243,7 +243,8 @@ function save_application_and_resume(array $formData, array $fileData)
         </div>
       </div>
 
-      <div class="file has-name">
+
+      <div class="file">
         <label class="file-label">
           <input type="file" name="resume" id="resume" class="file-input <?php if (isset($errors['resume'])) {
             echo 'is-danger';
@@ -256,14 +257,11 @@ function save_application_and_resume(array $formData, array $fileData)
 
           ?>
           <span class="file-cta">
-            <span class="file-icon">
-              <i class="fas fa-upload"></i>
-            </span>
-            <span class="file-label"> Choose file... </span>
+            <span class="file-label" id="resume-file-name"> Choose a file… </span>
           </span>
-          <span class="file-name">.pdf</span>
         </label>
       </div>
+
 
 
       <label class="checkbox">
@@ -290,6 +288,7 @@ function save_application_and_resume(array $formData, array $fileData)
   <footer class="site-footer">
     <p>&copy; 2025 Joshua Jason. All rights reserved</p>
   </footer>
+  <script src="app.js"></script>
 </body>
 
 </html>
