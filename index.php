@@ -261,7 +261,7 @@ function save_application_and_resume(array $formData, array $fileData)
             </span>
             <span class="file-label"> Choose file... </span>
           </span>
-          <span class="file-name"> file.pdf</span>
+          <span class="file-name">.pdf</span>
         </label>
       </div>
 
