@@ -286,7 +286,7 @@ function save_application_and_resume(array $formData, array $fileData)
     </form>
   </main>
   <footer class="site-footer">
-    <p>&copy; 2025 Joshua Jason. All rights reserved</p>
+    <p>&copy; 2025 Joshua Wilfinger - Licensed under MIT</p>
   </footer>
   <script src="app.js"></script>
 </body>
